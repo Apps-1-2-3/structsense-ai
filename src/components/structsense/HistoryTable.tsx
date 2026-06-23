@@ -18,8 +18,11 @@ export function HistoryTable({
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border bg-card">
+    <div className="space-y-4">
+      <HealthTrendChart entries={entries} />
+      <div className="overflow-hidden rounded-2xl border border-border bg-card">
       <table className="w-full text-sm">
+
         <thead className="bg-background/60 text-xs uppercase tracking-widest text-muted-foreground">
           <tr>
             <th className="px-4 py-3 text-left font-semibold">Image</th>
