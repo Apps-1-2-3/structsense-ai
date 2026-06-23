@@ -1,14 +1,18 @@
 import { useCallback, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Upload, Image as ImageIcon, Loader2 } from "lucide-react";
+import { AnalysisResult } from "@/lib/structsense";
+import { CrackOverlay } from "./CrackOverlay";
 
 interface Props {
   previewUrl: string | null;
   isAnalyzing: boolean;
   onFile: (file: File) => void;
+  result?: AnalysisResult | null;
 }
 
-export function UploadPanel({ previewUrl, isAnalyzing, onFile }: Props) {
+
+export function UploadPanel({ previewUrl, isAnalyzing, onFile, result }: Props) {
   const [dragOver, setDragOver] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -48,7 +52,7 @@ export function UploadPanel({ previewUrl, isAnalyzing, onFile }: Props) {
 
         {previewUrl ? (
           <div className="relative h-full w-full">
-            <img src={previewUrl} alt="Uploaded structure" className="h-full w-full object-contain" />
+            <CrackOverlay imageUrl={previewUrl} result={isAnalyzing ? null : result ?? null} />
             {isAnalyzing && (
               <>
                 <div className="absolute inset-0 bg-background/40 backdrop-blur-[1px]" />
@@ -62,6 +66,7 @@ export function UploadPanel({ previewUrl, isAnalyzing, onFile }: Props) {
               </>
             )}
           </div>
+
         ) : (
           <motion.div
             initial={{ opacity: 0, y: 8 }}

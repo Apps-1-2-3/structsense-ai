@@ -49,9 +49,12 @@ def run_inference(image: Image.Image) -> dict:
             "overallHealthScore": 42,
             "healthStatus": "Poor",
             "distressTypes": [
-                {"name": "Flexural Cracking", "severity": "High", "confidence": 92, "location": "Mid-span tension zone"},
-                {"name": "Concrete Spalling", "severity": "Medium", "confidence": 78, "location": "Bottom cover, near support"},
-                {"name": "Rebar Corrosion", "severity": "Medium", "confidence": 71, "location": "Exposed stirrups"},
+                {"name": "Flexural Cracking", "severity": "High", "confidence": 92, "location": "Mid-span tension zone",
+                 "boundingBoxes": [[0.18, 0.55, 0.55, 0.08], [0.30, 0.68, 0.40, 0.05]]},
+                {"name": "Concrete Spalling", "severity": "Medium", "confidence": 78, "location": "Bottom cover, near support",
+                 "boundingBoxes": [[0.05, 0.78, 0.18, 0.14]]},
+                {"name": "Rebar Corrosion", "severity": "Medium", "confidence": 71, "location": "Exposed stirrups",
+                 "boundingBoxes": [[0.72, 0.60, 0.20, 0.22]]},
             ],
             "maintenancePriority": "Immediate",
             "recommendations": [
@@ -73,8 +76,10 @@ def run_inference(image: Image.Image) -> dict:
             "overallHealthScore": 68,
             "healthStatus": "Moderate",
             "distressTypes": [
-                {"name": "Hairline Cracks", "severity": "Low", "confidence": 84, "location": "Vertical, lower third"},
-                {"name": "Surface Efflorescence", "severity": "Low", "confidence": 66, "location": "West face"},
+                {"name": "Hairline Cracks", "severity": "Low", "confidence": 84, "location": "Vertical, lower third",
+                 "boundingBoxes": [[0.42, 0.45, 0.06, 0.40]]},
+                {"name": "Surface Efflorescence", "severity": "Low", "confidence": 66, "location": "West face",
+                 "boundingBoxes": [[0.10, 0.20, 0.25, 0.18]]},
             ],
             "maintenancePriority": "Short-term",
             "recommendations": [
@@ -95,7 +100,8 @@ def run_inference(image: Image.Image) -> dict:
             "overallHealthScore": 88,
             "healthStatus": "Good",
             "distressTypes": [
-                {"name": "Map Cracking", "severity": "Low", "confidence": 58, "location": "Wearing surface"},
+                {"name": "Map Cracking", "severity": "Low", "confidence": 58, "location": "Wearing surface",
+                 "boundingBoxes": [[0.25, 0.30, 0.50, 0.45]]},
             ],
             "maintenancePriority": "Routine",
             "recommendations": [
@@ -111,6 +117,7 @@ def run_inference(image: Image.Image) -> dict:
             },
         },
     ]
+
 
     result = scenarios[seed % len(scenarios)]
     result["maintenancePlan"] = build_maintenance_plan(result["distressTypes"])

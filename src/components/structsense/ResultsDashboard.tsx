@@ -1,12 +1,14 @@
 import { motion } from "framer-motion";
-import { AlertTriangle, ShieldAlert, Activity, ClipboardList, Wrench } from "lucide-react";
+import { AlertTriangle, ShieldAlert, Activity, ClipboardList, Wrench, Download } from "lucide-react";
 import {
   AnalysisResult,
   DistressType,
   severityColor,
-  riskColor,
+  generatePdfReport,
 } from "@/lib/structsense";
 import { HealthGauge } from "./HealthGauge";
+import { RiskBadge } from "./RiskBadge";
+
 
 function SeverityBadge({ severity }: { severity: DistressType["severity"] }) {
   const c = severityColor(severity);
@@ -58,10 +60,25 @@ export function ResultsDashboard({ result }: { result: AnalysisResult }) {
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
         <div className="rounded-2xl border border-border bg-card p-5 lg:col-span-2">
-          <div className="mb-1 text-xs uppercase tracking-widest text-muted-foreground">Structure</div>
-          <div className="mb-4 text-lg font-semibold text-foreground">{result.structureType}</div>
-          <HealthGauge score={result.overallHealthScore} status={result.healthStatus} />
+          <div className="mb-1 flex items-start justify-between gap-2">
+            <div>
+              <div className="text-xs uppercase tracking-widest text-muted-foreground">Structure</div>
+              <div className="text-lg font-semibold text-foreground">{result.structureType}</div>
+            </div>
+            <RiskBadge risk={result.healthSummary.loadBearingRisk} />
+          </div>
+          <div className="mt-3">
+            <HealthGauge score={result.overallHealthScore} status={result.healthStatus} />
+          </div>
+          <button
+            type="button"
+            onClick={() => generatePdfReport(result)}
+            className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border border-border bg-background/40 px-3 py-2 text-sm font-semibold text-foreground transition hover:border-primary/50 hover:bg-primary/10 hover:text-primary"
+          >
+            <Download className="size-4" /> Download PDF Report
+          </button>
         </div>
+
 
         <div className="space-y-4 rounded-2xl border border-border bg-card p-5 lg:col-span-3">
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -132,15 +149,8 @@ export function ResultsDashboard({ result }: { result: AnalysisResult }) {
             <div className="mb-2 flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
               <AlertTriangle className="size-4" /> Load-bearing Risk
             </div>
-            <div
-              className="inline-flex rounded-lg px-3 py-1.5 text-sm font-semibold"
-              style={{
-                background: `${riskColor(result.healthSummary.loadBearingRisk)}22`,
-                color: riskColor(result.healthSummary.loadBearingRisk),
-              }}
-            >
-              {result.healthSummary.loadBearingRisk}
-            </div>
+            <RiskBadge risk={result.healthSummary.loadBearingRisk} />
+
             <p className="mt-3 text-sm text-foreground/80">{result.healthSummary.conditionSentence}</p>
             <p className="mt-2 text-xs text-muted-foreground">
               Inspection cadence: {result.healthSummary.inspectionFrequency}
