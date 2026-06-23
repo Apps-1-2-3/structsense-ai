@@ -1,4 +1,6 @@
 import { HistoryEntry, scoreColor } from "@/lib/structsense";
+import { HealthTrendChart } from "./HealthTrendChart";
+
 
 export function HistoryTable({
   entries,
