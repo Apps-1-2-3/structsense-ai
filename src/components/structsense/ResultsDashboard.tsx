@@ -1,12 +1,14 @@
 import { motion } from "framer-motion";
-import { AlertTriangle, ShieldAlert, Activity, ClipboardList, Wrench } from "lucide-react";
+import { AlertTriangle, ShieldAlert, Activity, ClipboardList, Wrench, Download } from "lucide-react";
 import {
   AnalysisResult,
   DistressType,
   severityColor,
-  riskColor,
+  generatePdfReport,
 } from "@/lib/structsense";
 import { HealthGauge } from "./HealthGauge";
+import { RiskBadge } from "./RiskBadge";
+
 
 function SeverityBadge({ severity }: { severity: DistressType["severity"] }) {
   const c = severityColor(severity);
