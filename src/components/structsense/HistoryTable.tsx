@@ -66,6 +66,8 @@ export function HistoryTable({
           })}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }
+
