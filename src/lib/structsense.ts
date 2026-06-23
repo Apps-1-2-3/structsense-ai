@@ -7,12 +7,16 @@ export type HealthStatus = "Critical" | "Poor" | "Moderate" | "Good" | "Excellen
 export type Priority = "Immediate" | "Short-term" | "Routine" | "None";
 export type LoadRisk = "Safe" | "Monitor" | "Restricted" | "Unsafe";
 
+export type BoundingBox = [number, number, number, number]; // [x, y, w, h] normalized 0-1
+
 export interface DistressType {
   name: string;
   severity: Severity;
   confidence: number;
   location: string;
+  boundingBoxes?: BoundingBox[];
 }
+
 
 export interface MaintenancePlanItem {
   distressName: string;
