@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { AlertCircle, CheckCircle2, Cpu, History, Wrench, ScanLine } from "lucide-react";
+import { AlertCircle, CheckCircle2, Cpu, History, Wrench, ScanLine, GitCompare } from "lucide-react";
+import { CompareDialog } from "@/components/structsense/CompareDialog";
+
 
 import { UploadPanel } from "@/components/structsense/UploadPanel";
 import { ResultsDashboard } from "@/components/structsense/ResultsDashboard";
@@ -46,6 +48,8 @@ function StructSenseApp() {
   const [backendUp, setBackendUp] = useState<boolean | null>(null);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [tab, setTab] = useState<Tab>("results");
+  const [compareOpen, setCompareOpen] = useState(false);
+
 
   useEffect(() => {
     pingHealth().then(setBackendUp);
@@ -104,15 +108,26 @@ function StructSenseApp() {
               </p>
             </div>
           </div>
-          <BackendStatus up={backendUp} />
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setCompareOpen(true)}
+              className="hidden items-center gap-2 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground transition hover:border-primary/50 hover:text-primary sm:inline-flex"
+            >
+              <GitCompare className="size-3.5" /> Compare Two Images
+            </button>
+            <BackendStatus up={backendUp} />
+          </div>
         </div>
       </header>
+      <CompareDialog open={compareOpen} onOpenChange={setCompareOpen} />
+
 
       <main className="mx-auto max-w-7xl px-6 py-6">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
           {/* Left 40% */}
           <section>
-            <UploadPanel previewUrl={previewUrl} isAnalyzing={isAnalyzing} onFile={handleFile} />
+            <UploadPanel previewUrl={previewUrl} isAnalyzing={isAnalyzing} onFile={handleFile} result={result} />
             {error && (
               <div className="mt-4 flex items-start gap-2 rounded-xl border border-danger/40 bg-danger/10 p-3 text-sm text-danger">
                 <AlertCircle className="mt-0.5 size-4 shrink-0" />
